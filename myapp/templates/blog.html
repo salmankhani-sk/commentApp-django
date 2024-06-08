@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Comment Section</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body class='bg-light'>
+    <div class='container pt-4'>
+        <h1>User Comment</h1>
+        <form method='POST' id='form' action="{% url 'blog-form' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type='submit' class='btn btn-primary'>Submit</button>
+        </form>
+    </div>
+    <script>
+        const form = document.getElementById('form');
+        form.addEventListener('submit', submitHandler);
+        function submitHandler(e){
+            e.preventDefault();
+            fetch(form.action, {method: 'POST', body: new FormData(form)})
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === 'success') {
+                    alert('Success!');
+                    form.reset();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
